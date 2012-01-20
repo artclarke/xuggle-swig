@@ -1688,6 +1688,10 @@ public:
     const String *pure_interfaces = typemapLookup("javainterfaces", typemap_lookup_type, WARN_NONE);
     
     //translate and write javadoc comment if flagged
+    const String *java_imports = typemapLookup("javaimports", typemap_lookup_type, WARN_NONE);
+    Printv(proxy_class_def, java_imports ? java_imports : "", "\n"); // Import statements
+
+    // Write the javadoc comment AFTER any javaimports
     if (doxygen_javadoc_flag){
       String *doxygen_comments;
       if(DoxygenTranslator::getDocumentation(n, JavaDoc, doxygen_comments)){
@@ -1699,8 +1703,8 @@ public:
     }
     
     // Start writing the proxy class
-    Printv(proxy_class_def, typemapLookup("javaimports", typemap_lookup_type, WARN_NONE),	// Import statements
-	   "\n", typemapLookup("javaclassmodifiers", typemap_lookup_type, WARN_JAVA_TYPEMAP_CLASSMOD_UNDEF),	// Class modifiers
+    const String *java_classmodifiers = typemapLookup("javaclassmodifiers", typemap_lookup_type, WARN_JAVA_TYPEMAP_CLASSMOD_UNDEF);
+    Printv(proxy_class_def, (Len(java_classmodifiers) > 0 ? java_classmodifiers : ""),
 	   " $javaclassname",	// Class name and bases
 	   (*Char(wanted_base)) ? " extends " : "", wanted_base, *Char(pure_interfaces) ?	// Pure Java interfaces
 	   " implements " : "", pure_interfaces, " {", derived ? typemapLookup("javabody_derived", typemap_lookup_type, WARN_JAVA_TYPEMAP_JAVABODY_UNDEF) :	// main body of class
@@ -2217,7 +2221,7 @@ public:
     }
 
     generateThrowsClause(n, function_code);
-    Printf(function_code, " %s\n\n", tm ? (const String *) tm : empty_string);
+    Printf(function_code, " %s\n\n", tm ? (const String *) tm : this->empty_string);
     Printv(proxy_class_code, function_code, NIL);
 
     Delete(pre_code);
@@ -2698,7 +2702,7 @@ public:
     }
 
     generateThrowsClause(n, function_code);
-    Printf(function_code, " %s\n\n", tm ? (const String *) tm : empty_string);
+    Printf(function_code, " %s\n\n", tm ? (const String *) tm : this->empty_string);
     Printv(module_class_code, function_code, NIL);
 
     Delete(pre_code);

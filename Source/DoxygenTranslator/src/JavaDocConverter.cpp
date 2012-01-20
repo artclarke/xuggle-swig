@@ -86,7 +86,7 @@ std::string JavaDocConverter::javaDocFormat(DoxygenEntity & doxygenEntity) {
   } else if (doxygenEntity.typeOfEntity.compare("~") == 0) {
     return "~";
   }
-  return "";
+  return doxygenEntity.data;
 }
 
 
