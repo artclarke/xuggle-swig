@@ -116,7 +116,7 @@ std::string JavaDocConverter::translateEntity(DoxygenEntity & doxyEntity) {
     return formatCommand(std::string(translateSubtree(doxyEntity)), 0) + "\n * ";
 
   } else if (doxyEntity.typeOfEntity.compare("plainstd::string") == 0 ||
-	     doxyEntity.typeOfEntity.compare("deprecated") == 0 || 
+//	     doxyEntity.typeOfEntity.compare("deprecated") == 0 || 
 	     doxyEntity.typeOfEntity.compare("brief") == 0) {
     return formatCommand(doxyEntity.data, 0) + "\n * ";
 
